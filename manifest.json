@@ -3,10 +3,10 @@
   "version": "1.0",
   "manifest_version": 2,
   "description": "This program fact checks your friends' statuses with ",
-  "permissions": ["tabs", "*://*.facebook.com/*"],
+  "permissions": ["tabs", "*://*.twitter.com/*"],
   "content_scripts": [
     {
-      "matches": ["*://*.facebook.com/*"],
+      "matches": ["*://*.twitter.com/*"],
       "js": ["main.js"]
     }
   ]
