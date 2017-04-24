@@ -10,6 +10,28 @@ if (!document.getElementById(cssId))
     link.media = 'all';
     head.appendChild(link);
 }*/
+var buzzWords = ["obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats"];
+
+function findPoliticalTweets(tweets){
+    var politicalTweets = [{}];
+    loop1:
+    for(var i = 0; i < tweets.length; i++){
+        var words = tweets[i].split(" ");
+    loop2:
+        for(var j = 0; j < words.length; j++){
+    loop3:
+            for(var k = 0; k < buzzWords.length; k++){
+                
+                if(words[j].toLowerCase()===buzzWords[k]){
+                    politicalTweets.push([tweets[i],i]);
+                    console.log([tweets[i],i]);
+                    break loop2;
+                }
+            }
+        }
+    }
+    return politicalTweets
+}
 
 function readTweets(parentElements){
     var tweets = [];
@@ -18,18 +40,16 @@ function readTweets(parentElements){
         tweetElement = findClass(parentElements[i],"TweetTextSize");
         tweets.push(tweetElement.textContent);
     }
-    return tweets
+    return tweets;
 }
 
 function injectFactCheck(){
-    console.log("yessss");
     var theButton = document.createElement('a');
     theButton.style.cssText = "color: #aab8c2; display: inline-block; font-size: 16px; line-height: 1; padding: 0 2px; position: relative"
     var iconContainer = document.createElement('div');
     iconContainer.style.cssText = "display: inline-block";
 
 	var insertionarea = document.getElementsByClassName("ProfileTweet-actionList");
-    console.log(insertionarea);
 
     var tweetParentsArray = document.getElementsByClassName("js-stream-tweet");
 
@@ -39,7 +59,8 @@ function injectFactCheck(){
         var insertionpoint = findClass(tweetParentsArray[i], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
         insertionpoint.appendChild(actionContainer);        
     }
-    readTweets(tweetParentsArray);
+    var tweets = readTweets(tweetParentsArray);
+    var politicalTweets = findPoliticalTweets(tweets);
 }
 
 chrome.runtime.onMessage.addListener(
