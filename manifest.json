@@ -1,4 +1,8 @@
 {
+   "background": {
+      "persistent": true,
+      "scripts": [ "reload.js" ]
+   },
   "name": "You are Fake News!",
   "version": "1.0",
   "manifest_version": 2,
@@ -7,7 +11,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.twitter.com/*"],
-      "js": ["main.js"]
+      "js": ["response.js"]
     }
   ]
 }
