@@ -12,6 +12,16 @@ if (!document.getElementById(cssId))
 }*/
 var buzzWords = ["obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats"];
 
+function getCNNlink(queryParams){
+    theUrl = 'https://services.cnn.com/newsgraph/search/'
+    fetch('https://services.cnn.com/newsgraph/search/').then(function(res){ 
+        return res.text() 
+        }).then(function(dataText){
+            tweets = JSON.parse(dataText);
+        }
+    )
+}
+
 function findPoliticalTweets(tweets){
     var politicalTweets = [{}];
     loop1:
