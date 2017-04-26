@@ -10,7 +10,7 @@ if (!document.getElementById(cssId))
     link.media = 'all';
     head.appendChild(link);
 }*/
-var buzzWords = ["obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats"];
+var buzzWords = ["obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
 
 function getCNNlink(queryParams){
     theUrl = 'https://services.cnn.com/newsgraph/search/'
@@ -23,7 +23,7 @@ function getCNNlink(queryParams){
 }
 
 function findPoliticalTweets(tweets){
-    var politicalTweets = [{}];
+    var politicalTweets = [];
     loop1:
     for(var i = 0; i < tweets.length; i++){
         var words = tweets[i].split(" ");
@@ -33,8 +33,8 @@ function findPoliticalTweets(tweets){
             for(var k = 0; k < buzzWords.length; k++){
                 
                 if(words[j].toLowerCase()===buzzWords[k]){
+                    
                     politicalTweets.push([tweets[i],i]);
-                    console.log([tweets[i],i]);
                     break loop2;
                 }
             }
@@ -62,15 +62,23 @@ function injectFactCheck(){
 	var insertionarea = document.getElementsByClassName("ProfileTweet-actionList");
 
     var tweetParentsArray = document.getElementsByClassName("js-stream-tweet");
+    var tweets = readTweets(tweetParentsArray);
+    var politicalTweets = findPoliticalTweets(tweets);
+    console.log("kobe", politicalTweets[0][1]);
+    for(var i = 0; i < politicalTweets.length; i++){
+        var actionContainer = document.createElement('div');
+        actionContainer.style.cssText = "display: inline-block; min-width: 80px; border: 2px solid red"
+        var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
+        insertionpoint.appendChild(actionContainer); 
+    }
 
-    for(var i = 0; i < tweetParentsArray.length; i++){
+    /*for(var i = 0; i < tweetParentsArray.length; i++){
         var actionContainer = document.createElement('div');
         actionContainer.style.cssText = "display: inline-block; min-width: 80px; border: 2px solid red"
         var insertionpoint = findClass(tweetParentsArray[i], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
         insertionpoint.appendChild(actionContainer);        
-    }
-    var tweets = readTweets(tweetParentsArray);
-    var politicalTweets = findPoliticalTweets(tweets);
+    }*/
+
 }
 
 chrome.runtime.onMessage.addListener(
