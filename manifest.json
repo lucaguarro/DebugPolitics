@@ -6,12 +6,12 @@
   "name": "You are Fake News!",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "This program fact checks your friends' statuses with ",
-  "permissions": ["downloads", "tabs", "*://*.twitter.com/*"],
+  "description": "This extension fact-checks your friends' tweets with a variety of news sources",
+  "permissions": ["webRequest", "tabs", "*://*.twitter.com/*"],
   "content_scripts": [
     {
       "matches": ["*://*.twitter.com/*"],
       "js": ["response.js"]
     }
   ]
-}
+}//6f51b1a6-3665-4487-97d2-1c72a2d6b617
