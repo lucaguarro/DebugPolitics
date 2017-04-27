@@ -74,21 +74,23 @@ function injectFactCheck(){
         button.addEventListener('click', myFunction);
         //button.className = "debugPoliticsButton";
         button.style.cssText = "padding: 10px; font-size: 16px; border: 5px solid green; cursor: pointer;"
+        
         var items = document.createElement('div');
         items.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1;"
-        var list1 = document.createElement('a');
-        list1.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block;"
-        var list2 = document.createElement('a');
-        list1.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block;"
-        var list3 = document.createElement('a');
-        list1.style.cssText = "position: inherit; padding: 10x 10px; text-decoration: none; display: inline-block;"
+        var unorderedList = document.createElement('ul');
+        
+        for(var j = 0; j < 3; j++){
+            var listItem = document.createElement('li');
+            var link = document.createElement('a');
+            link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block; border: 1px solid blue"
+            listItem.appendChild(link);
+            unorderedList.appendChild(listItem);
+        }
+        items.appendChild(unorderedList);
         var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
         insertionpoint.appendChild(actionContainer);
         actionContainer.appendChild(button);
-        button.appendChild(items);
-        items.appendChild(list1);
-        items.appendChild(list2);
-        items.appendChild(list3); 
+        actionContainer.appendChild(items);
     }
     /*for(var i = 0; i < tweetParentsArray.length; i++){
         var actionContainer = document.createElement('div');
@@ -113,7 +115,14 @@ function injectFactCheck(){
 }
 
 var myFunction = function(){
-    console.log("yolo swag kobeeee");
+    var targetElement = event.target || event.srcElement;
+    parentElement = targetElement.parentNode;
+    listContainer = parentElement.getElementsByTagName('div')[0];
+    if (listContainer.style.visibility === 'hidden'){
+        listContainer.style.visibility = 'visible'; 
+    }else{
+        listContainer.style.visibility = 'hidden';
+    }
 }
 
 function createSearchUrl(words){
