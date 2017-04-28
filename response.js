@@ -77,11 +77,16 @@ function injectFactCheck(){
         actionContainer.style.cssText = "position: relative; display: inline-block;"
         var button = document.createElement('button');
         button.addEventListener('click', hideShowList);
-        //button.className = "debugPoliticsButton";
-        button.style.cssText = "padding: 10px; font-size: 16px; border: 5px solid green; cursor: pointer;"
+        button.style.cssText = "padding: 10px; font-size: 16px; cursor: pointer;"
+
+        var icon = document.createElement('i');
+        icon.className += "fa fa-check-circle-o";
+        icon.setAttribute("aria-hidden", "true");
+
+        button.appendChild(icon);
 
         var listContainer = document.createElement('div');
-        listContainer.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1;"
+        listContainer.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1; padding-top: 5px"
             listContainer.style.height = '0';
         listContainer.style.width = '0';
         listContainer.style.visibility = 'hidden';
@@ -127,6 +132,10 @@ function injectFactCheck(){
 
 var hideShowList = function(){
     var targetElement = event.target || event.srcElement;
+    console.log(targetElement.nodeName);
+    if(targetElement.nodeName == "I"){
+        targetElement = targetElement.parentNode;
+    }
     console.log(targetElement);
     parentElement = targetElement.parentNode.parentNode.parentNode;
     console.log('what is parent', parentElement);
