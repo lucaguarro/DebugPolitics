@@ -185,6 +185,7 @@ function findClass(element, className) {
     }
     recurse(element, className, false);
     return foundElement;
+}
 
 var prevUrl;
 chrome.runtime.onMessage.addListener(
