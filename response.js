@@ -13,7 +13,7 @@ if (!document.getElementById(cssId))
 
 
 
-var buzzWords = ["obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
+var buzzWords = ["a","and","the","obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
 
 function getCNNlink(queryParams){
     theUrl = 'https://services.cnn.com/newsgraph/search/'
@@ -87,7 +87,7 @@ function injectFactCheck(){
             unorderedList.appendChild(listItem);
         }
         items.appendChild(unorderedList);
-        var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
+        var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList"); //insertionarea[i].parentNode
         insertionpoint.appendChild(actionContainer);
         actionContainer.appendChild(button);
         actionContainer.appendChild(items);
@@ -160,16 +160,6 @@ function httpGet(theUrl)
     return xmlHttp.responseText;
 }
 
-chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse) {
-		if (request.greeting == "fire") {
-			console.log("yolo swag tits");
-			injectFactCheck();		
-			sendResponse({farewell: "fired"});
-		}
-	}
-);
-
 function findClass(element, className) {
     var foundElement = null, found;
     function recurse(element, className, found) {
@@ -190,4 +180,34 @@ function findClass(element, className) {
     }
     recurse(element, className, false);
     return foundElement;
+}
+
+var prevUrl;
+chrome.runtime.onMessage.addListener(
+	function(request, sender, sendResponse) {
+        console.log('the previous', prevUrl);
+        var boiiii = checkPrevTab(window.location.href);
+		if (request.greeting == "fire" && boiiii) {
+            prevUrl = window.location.href;
+			injectFactCheck();		
+			sendResponse({farewell: "fired"});
+		}
+	}
+);
+
+function checkPrevTab(theurl){
+    var splitPrevUrl;
+    var splitCurrUrl = theurl.split('/');
+    console.log('Current', splitCurrUrl);
+    if(prevUrl){
+        splitPrevUrl = prevUrl.split('/');
+    }else{return true;}
+    console.log('Prev', splitPrevUrl);
+    if((splitPrevUrl.length == 4 && splitCurrUrl.length == 6) ||
+        (splitPrevUrl.length == 6 && splitCurrUrl.length == 4)){
+        prevUrl = theurl;
+        return false;
+    } else{
+        return true
+    }
 }
