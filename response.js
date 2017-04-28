@@ -17,8 +17,8 @@ var buzzWords = ["obama", "trump", "obamacare", "north korea", "politics", "chin
 
 function getCNNlink(queryParams){
     theUrl = 'https://services.cnn.com/newsgraph/search/'
-    fetch('https://services.cnn.com/newsgraph/search/').then(function(res){ 
-        return res.text() 
+    fetch('https://services.cnn.com/newsgraph/search/').then(function(res){
+        return res.text()
         }).then(function(dataText){
             tweets = JSON.parse(dataText);
         }
@@ -34,9 +34,9 @@ function findPoliticalTweets(tweets){
         for(var j = 0; j < words.length; j++){
     loop3:
             for(var k = 0; k < buzzWords.length; k++){
-                
+
                 if(words[j].toLowerCase()===buzzWords[k]){
-                    
+
                     politicalTweets.push([tweets[i],i]);
                     break loop2;
                 }
@@ -74,11 +74,12 @@ function injectFactCheck(){
         button.addEventListener('click', myFunction);
         //button.className = "debugPoliticsButton";
         button.style.cssText = "padding: 10px; font-size: 16px; border: 5px solid green; cursor: pointer;"
-        
+
         var items = document.createElement('div');
         items.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1;"
         var unorderedList = document.createElement('ul');
-        
+        actionContainer.appendChild(button);
+
         for(var j = 0; j < 3; j++){
             var listItem = document.createElement('li');
             var link = document.createElement('a');
@@ -87,16 +88,16 @@ function injectFactCheck(){
             unorderedList.appendChild(listItem);
         }
         items.appendChild(unorderedList);
-        var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
+        var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList");
+        var insertionPointList = insertionpoint.parentNode; //insertionarea[i].parentNode
+        insertionPointList.appendChild(items);
         insertionpoint.appendChild(actionContainer);
-        actionContainer.appendChild(button);
-        actionContainer.appendChild(items);
     }
     /*for(var i = 0; i < tweetParentsArray.length; i++){
         var actionContainer = document.createElement('div');
         actionContainer.style.cssText = "display: inline-block; min-width: 80px; border: 2px solid red"
         var insertionpoint = findClass(tweetParentsArray[i], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
-        insertionpoint.appendChild(actionContainer);        
+        insertionpoint.appendChild(actionContainer);
     }*/
     //var url = createSearchUrl(words);
     //var url = "https://eventregistry.org/json/article?ignoreKeywords=&keywords=Donald%20Trump&action=getArticles&resultType=articles&callback=JSON_CALLBACK&apiKey=6f51b1a6-3665-4487-97d2-1c72a2d6b617";
@@ -116,10 +117,14 @@ function injectFactCheck(){
 
 var myFunction = function(){
     var targetElement = event.target || event.srcElement;
-    parentElement = targetElement.parentNode;
-    listContainer = parentElement.getElementsByTagName('div')[0];
+    console.log(targetElement);
+    parentElement = targetElement.parentNode.parentNode.parentNode;
+    console.log('what is parent', parentElement);
+    //listContainer = parentElement .getElementsByTagName('div');
+    listContainer = (parentElement.childNodes)[5];
+    console.log('llisthopefullly',listContainer);
     if (listContainer.style.visibility === 'hidden'){
-        listContainer.style.visibility = 'visible'; 
+        listContainer.style.visibility = 'visible';
     }else{
         listContainer.style.visibility = 'hidden';
     }
@@ -132,10 +137,10 @@ function createSearchUrl(words){
             url = url + words[i] + "%20";
         } else{
             url = url + words[i]
-        }   
+        }
     }
     url = url + "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
-    return url; 
+    return url;
 }
 
 function checkStatus(response){
@@ -164,7 +169,7 @@ chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		if (request.greeting == "fire") {
 			console.log("yolo swag tits");
-			injectFactCheck();		
+			injectFactCheck();
 			sendResponse({farewell: "fired"});
 		}
 	}
