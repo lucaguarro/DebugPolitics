@@ -74,12 +74,13 @@ function injectFactCheck(){
     var politicalTweets = findPoliticalTweets(tweets);
     for(var i = 0; i < politicalTweets.length; i++){
         var actionContainer = document.createElement('div');
-        actionContainer.style.cssText = "position: relative; display: inline-block;"
+        actionContainer.style.cssText = "position: relative; display: inline-block; float: right;"
         var button = document.createElement('button');
         button.addEventListener('click', hideShowList);
-        button.style.cssText = "padding: 10px; font-size: 16px; cursor: pointer;"
+        button.style.cssText = "cursor: pointer;"
 
         var icon = document.createElement('i');
+        icon.style.cssText = "font-size: 20px; color: red;"
         icon.className += "fa fa-check-circle-o";
         icon.setAttribute("aria-hidden", "true");
 
