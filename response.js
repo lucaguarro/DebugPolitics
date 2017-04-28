@@ -11,6 +11,12 @@ if (!document.getElementById(cssId))
     head.appendChild(link);
 }*/
 
+var style = document.createElement('link');
+style.rel = 'stylesheet';
+style.type = 'text/css';
+style.href = chrome.extension.getURL('font-awesome-4.7.0/css/font-awesome.min.css');
+(document.head||document.documentElement).appendChild(style);
+
 
 
 var buzzWords = ["a","and","the","obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
@@ -66,7 +72,6 @@ function injectFactCheck(){
     var tweetParentsArray = document.getElementsByClassName("js-stream-tweet");
     var tweets = readTweets(tweetParentsArray);
     var politicalTweets = findPoliticalTweets(tweets);
-    console.log("kobe", politicalTweets[0][1]);
     for(var i = 0; i < politicalTweets.length; i++){
         var actionContainer = document.createElement('div');
         actionContainer.style.cssText = "position: relative; display: inline-block;"
