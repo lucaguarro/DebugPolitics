@@ -71,14 +71,19 @@ function injectFactCheck(){
         var actionContainer = document.createElement('div');
         actionContainer.style.cssText = "position: relative; display: inline-block;"
         var button = document.createElement('button');
-        button.addEventListener('click', myFunction);
+        button.addEventListener('click', hideShowList);
         //button.className = "debugPoliticsButton";
         button.style.cssText = "padding: 10px; font-size: 16px; border: 5px solid green; cursor: pointer;"
 
-        var items = document.createElement('div');
-        items.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1;"
+        var listContainer = document.createElement('div');
+        listContainer.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1;"
+            listContainer.style.height = '0';
+        listContainer.style.width = '0';
+        listContainer.style.visibility = 'hidden';
+
         var unorderedList = document.createElement('ul');
         actionContainer.appendChild(button);
+        
 
         for(var j = 0; j < 3; j++){
             var listItem = document.createElement('li');
@@ -87,10 +92,10 @@ function injectFactCheck(){
             listItem.appendChild(link);
             unorderedList.appendChild(listItem);
         }
-        items.appendChild(unorderedList);
+        listContainer.appendChild(unorderedList);
         var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList");
         var insertionPointList = insertionpoint.parentNode; //insertionarea[i].parentNode
-        insertionPointList.appendChild(items);
+        insertionPointList.appendChild(listContainer);
         insertionpoint.appendChild(actionContainer);
     }
     /*for(var i = 0; i < tweetParentsArray.length; i++){
@@ -115,7 +120,7 @@ function injectFactCheck(){
         });*/
 }
 
-var myFunction = function(){
+var hideShowList = function(){
     var targetElement = event.target || event.srcElement;
     console.log(targetElement);
     parentElement = targetElement.parentNode.parentNode.parentNode;
@@ -125,8 +130,12 @@ var myFunction = function(){
     console.log('llisthopefullly',listContainer);
     if (listContainer.style.visibility === 'hidden'){
         listContainer.style.visibility = 'visible';
+        listContainer.style.height = 'auto';
+        listContainer.style.width = 'auto';
     }else{
         listContainer.style.visibility = 'hidden';
+        listContainer.style.height = '0';
+        listContainer.style.width = '0';
     }
 }
 
