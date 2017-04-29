@@ -111,7 +111,11 @@ function injectFactCheck(){
 
         var client = new HttpClient();
         client.get('https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad', function(response) {
-            console.log("its yah boi", response);
+            var responseJSON = JSON.parse(response);
+            console.log("responseJSON", responseJSON);
+            console.log("web title", responseJSON.response.results[0].webTitle);
+            console.log("url", responseJSON.response.results[0].webUrl);
+            //console.log("url", response.results[0].webUrl)
         });
     }
 }
