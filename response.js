@@ -63,60 +63,43 @@ function readTweets(parentElements){
 }
 
 function injectFactCheck(){
-
-    var iconContainer = document.createElement('div');
-    iconContainer.style.cssText = "display: inline-block";
-
-	var insertionarea = document.getElementsByClassName("ProfileTweet-actionList");
-
     var tweetParentsArray = document.getElementsByClassName("js-stream-tweet");
     var tweets = readTweets(tweetParentsArray);
     var politicalTweets = findPoliticalTweets(tweets);
-    for(var i = 0; i < politicalTweets.length; i++){
-        var actionContainer = document.createElement('div');
-        actionContainer.style.cssText = "position: relative; display: inline-block; float: right;"
-        var button = document.createElement('button');
-        button.addEventListener('click', hideShowList);
-        button.style.cssText = "cursor: pointer;"
-
-        var icon = document.createElement('i');
-        icon.style.cssText = "font-size: 20px; color: red;"
-        icon.className += "fa fa-check-circle-o";
-        icon.setAttribute("aria-hidden", "true");
-
-        button.appendChild(icon);
-
-        var listContainer = document.createElement('div');
-        listContainer.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1; padding-top: 5px"
-            listContainer.style.height = '0';
-        listContainer.style.width = '0';
-        listContainer.style.visibility = 'hidden';
-
-        var unorderedList = document.createElement('ul');
-        actionContainer.appendChild(button);
-        
+    for(var i = 0; i < politicalTweets.length; i++){       
         var client = new HttpClient();
-        var results;
-        /*var theUrl = createGuardianUrl(politicalTweets[i][0]);
-        client.get(theUrl, function(response) {
-            var responseJSON = JSON.parse(response);
-            results = responseJSON.response.results;
-            console.log("web title", responseJSON.response.results[0].webTitle);
-            //console.log("url", responseJSON.response.results[0].webUrl);
-        });*/
-        var numItems; //How many links to put in the dropdown
-
+    
         let url = 'https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad'
         var http = new Http();
-        var insertionpoint;
-        var insertionPointList;
-        var listItem;
-        var link;
         http.makeRequest('GET', url, i).then(
             function (response){
-                
+                var actionContainer = document.createElement('div');
+                actionContainer.style.cssText = "position: relative; display: inline-block; float: right;"
+                var button = document.createElement('button');
+                button.addEventListener('click', hideShowList);
+                button.style.cssText = "cursor: pointer;"
+
+                var icon = document.createElement('i');
+                icon.style.cssText = "font-size: 20px; color: red;"
+                icon.className += "fa fa-check-circle-o";
+                icon.setAttribute("aria-hidden", "true");
+
+                button.appendChild(icon);
+
+                var listContainer = document.createElement('div');
+                listContainer.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1; padding-top: 5px"
+                    listContainer.style.height = '0';
+                listContainer.style.width = '0';
+                listContainer.style.visibility = 'hidden';
+
+                var unorderedList = document.createElement('ul');
+                actionContainer.appendChild(button);
+
                 var responseJSON = JSON.parse(response[1]);
                 var results = responseJSON.response.results;
+                console.log(results);
+
+                var numItems; //How many links to put in the dropdown
                 if(results.length < 3){
                     numItems = results.length;
                 } else{
@@ -125,40 +108,24 @@ function injectFactCheck(){
                 for(var j = 0; j < numItems; j++){
                     var listItem = document.createElement('li');
                     var link = document.createElement('a');
+                    link.href = results[j].webUrl;
+                    link.innerHTML = results[j].webTitle;
+                    link.target = "_blank";
                     link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block; border: 1px solid blue"
                     listItem.appendChild(link);
                     unorderedList.appendChild(listItem);
                 }
                 listContainer.appendChild(unorderedList);
                 console.log("response 0", response[0]);
-                //console.log("the political tweets", politicalTweets[0][1]);
-                //console.log("number", politicalTweets[response[0]][1]);
                 index = politicalTweets[response[0]][1];
                 var insertionpoint = findClass(tweetParentsArray[index], "ProfileTweet-actionList");
                 var insertionPointList = insertionpoint.parentNode; //insertionarea[response[0]].parentNode
                 insertionPointList.appendChild(listContainer);
                 insertionpoint.appendChild(actionContainer);
-                //console.log("Success!", responseJSON);
             }, function(error){
-                //console.log("Failed!", error);
+                console.log("Failed!", error);
             }
         );
-        /*
-
-        for(var j = 0; j < numItems; j++){
-            var listItem = document.createElement('li');
-            var link = document.createElement('a');
-            link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block; border: 1px solid blue"
-            listItem.appendChild(link);
-            unorderedList.appendChild(listItem);
-        }
-        listContainer.appendChild(unorderedList);
-        var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList");
-        var insertionPointList = insertionpoint.parentNode; //insertionarea[i].parentNode
-        insertionPointList.appendChild(listContainer);
-        insertionpoint.appendChild(actionContainer);*/
-
-
     }
 }
 //https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad
