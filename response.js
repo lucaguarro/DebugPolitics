@@ -19,7 +19,7 @@ style.href = chrome.extension.getURL('font-awesome-4.7.0/css/font-awesome.min.cs
 
 
 
-var buzzWords = ["a","and","the","obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
+var buzzWords = ["a","and", "the", "obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
 
 function getCNNlink(queryParams){
     theUrl = 'https://services.cnn.com/newsgraph/search/'
@@ -106,22 +106,44 @@ function injectFactCheck(){
         });*/
         var numItems; //How many links to put in the dropdown
 
-        let url = 'https://jsonplaceholder.typicode.com/users'
-        fetch(url).then(res=>{
-            if(res.status !== 200){
-                console.log('Looks like there was a problem. Status Code: '
-                + response.status);
-                return;
+        let url = 'https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad'
+        var http = new Http();
+        var insertionpoint;
+        var insertionPointList;
+        var listItem;
+        var link;
+        http.makeRequest('GET', url, i).then(
+            function (response){
+                
+                var responseJSON = JSON.parse(response[1]);
+                var results = responseJSON.response.results;
+                if(results.length < 3){
+                    numItems = results.length;
+                } else{
+                    numItems = 3;
+                }
+                for(var j = 0; j < numItems; j++){
+                    var listItem = document.createElement('li');
+                    var link = document.createElement('a');
+                    link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block; border: 1px solid blue"
+                    listItem.appendChild(link);
+                    unorderedList.appendChild(listItem);
+                }
+                listContainer.appendChild(unorderedList);
+                console.log("response 0", response[0]);
+                //console.log("the political tweets", politicalTweets[0][1]);
+                //console.log("number", politicalTweets[response[0]][1]);
+                index = politicalTweets[response[0]][1];
+                var insertionpoint = findClass(tweetParentsArray[index], "ProfileTweet-actionList");
+                var insertionPointList = insertionpoint.parentNode; //insertionarea[response[0]].parentNode
+                insertionPointList.appendChild(listContainer);
+                insertionpoint.appendChild(actionContainer);
+                //console.log("Success!", responseJSON);
+            }, function(error){
+                //console.log("Failed!", error);
             }
-            res.json().then(function(data){
-                console.log('word?',data);
-            });
-        });
-        if(results.length < 3){
-            numItems = results.length;
-        } else{
-            numItems = 3;
-        }
+        );
+        /*
 
         for(var j = 0; j < numItems; j++){
             var listItem = document.createElement('li');
@@ -134,7 +156,7 @@ function injectFactCheck(){
         var insertionpoint = findClass(tweetParentsArray[politicalTweets[i][1]], "ProfileTweet-actionList");
         var insertionPointList = insertionpoint.parentNode; //insertionarea[i].parentNode
         insertionPointList.appendChild(listContainer);
-        insertionpoint.appendChild(actionContainer);
+        insertionpoint.appendChild(actionContainer);*/
 
 
     }
@@ -151,7 +173,7 @@ createGuardianUrl = function(splitTweet){
     return url;
 }
 
-fetchRequest = function(url, index){
+/*fetchRequest = function(url, index){
     fetch(url).then(res=>{
         if(res.status !== 200){
             console.log('Looks like there was a problem. Status Code: '
@@ -159,11 +181,11 @@ fetchRequest = function(url, index){
             return;
         }
         res.json().then(function(data){
-            console.log(data);
-            return [data, index];
+            console.log(index, data);
+            return [index, data];
         });
     });
-}
+}*/
 
 
 
@@ -260,4 +282,36 @@ var HttpClient = function() {
         anHttpRequest.open( "GET", aUrl, true );            
         anHttpRequest.send( null );
     }
+}
+
+function Http () {
+    /**
+     * Helper for http calls
+     * @param method
+     * @param url
+     * @param data
+     * @returns {Promise}
+     */
+    function makeRequest(method,url,data) {
+        // Return a new promise.
+        return new Promise(function(resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open(method, url);
+
+            req.onload = function() {
+                if (req.status == 200) {
+                    var giveBack = [data, req.response];
+                    resolve(giveBack);
+                }
+                else {
+                    reject(Error(req.statusText));
+                }
+            };
+            req.onerror = function() {
+                reject(Error("Something went wrong ... "));
+            };
+            req.send(data);
+        });
+    }
+    this.makeRequest = makeRequest;
 }
