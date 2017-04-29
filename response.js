@@ -97,14 +97,26 @@ function injectFactCheck(){
         
         var client = new HttpClient();
         var results;
-        var theUrl = createGuardianUrl(politicalTweets[i][0]);
+        /*var theUrl = createGuardianUrl(politicalTweets[i][0]);
         client.get(theUrl, function(response) {
             var responseJSON = JSON.parse(response);
             results = responseJSON.response.results;
             console.log("web title", responseJSON.response.results[0].webTitle);
             //console.log("url", responseJSON.response.results[0].webUrl);
-        });
+        });*/
         var numItems; //How many links to put in the dropdown
+
+        let url = 'https://jsonplaceholder.typicode.com/users'
+        fetch(url).then(res=>{
+            if(res.status !== 200){
+                console.log('Looks like there was a problem. Status Code: '
+                + response.status);
+                return;
+            }
+            res.json().then(function(data){
+                console.log('word?',data);
+            });
+        });
         if(results.length < 3){
             numItems = results.length;
         } else{
@@ -132,13 +144,28 @@ createGuardianUrl = function(splitTweet){
     console.log("thetweet", splitTweet);
     var url = "https://content.guardianapis.com/search?q=";
     for(var i = 0; i < splitTweet.length; i++){
-        url.push
+        url += splitTweet[i];
     }
-    url += tweet;
     url += "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
     console.log("url", url);
     return url;
 }
+
+fetchRequest = function(url, index){
+    fetch(url).then(res=>{
+        if(res.status !== 200){
+            console.log('Looks like there was a problem. Status Code: '
+            + response.status);
+            return;
+        }
+        res.json().then(function(data){
+            console.log(data);
+            return [data, index];
+        });
+    });
+}
+
+
 
 
 var hideShowList = function(){
