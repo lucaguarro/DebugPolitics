@@ -108,7 +108,14 @@ function injectFactCheck(){
         var insertionPointList = insertionpoint.parentNode; //insertionarea[i].parentNode
         insertionPointList.appendChild(listContainer);
         insertionpoint.appendChild(actionContainer);
+
+        var client = new HttpClient();
+        client.get('https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad', function(response) {
+            console.log("its yah boi", response);
+        });
     }
+}
+    // do something with response
     /*for(var i = 0; i < tweetParentsArray.length; i++){
         var actionContainer = document.createElement('div');
         actionContainer.style.cssText = "display: inline-block; min-width: 80px; border: 2px solid red"
@@ -129,7 +136,7 @@ function injectFactCheck(){
         .catch(function(err){
             console.log('ERROR', err);
         });*/
-}
+
 
 var hideShowList = function(){
     var targetElement = event.target || event.srcElement;
@@ -238,5 +245,18 @@ function checkPrevTab(theurl){
         return false;
     } else{
         return true
+    }
+}
+
+var HttpClient = function() {
+    this.get = function(aUrl, aCallback) {
+        var anHttpRequest = new XMLHttpRequest();
+        anHttpRequest.onreadystatechange = function() { 
+            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                aCallback(anHttpRequest.responseText);
+        }
+
+        anHttpRequest.open( "GET", aUrl, true );            
+        anHttpRequest.send( null );
     }
 }
