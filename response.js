@@ -69,7 +69,6 @@ function injectFactCheck(){
     for(var i = 0; i < politicalTweets.length; i++){       
         var client = new HttpClient();
         let url = createSearchUrl(politicalTweets[i][0]);
-        //let url = 'https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad'
         var http = new Http();
         http.makeRequest('GET', url, i).then(
             function (response){
@@ -99,7 +98,8 @@ function injectFactCheck(){
                     e = window.event || e; 
                     if(this === e.target) {
                         e.stopPropagation();
-                        this.value = '';
+                        if(this.value === "Search the Guardian")
+                            this.value = '';
                     }
                 });
                 var spacer1 = document.createElement('span');
@@ -108,6 +108,7 @@ function injectFactCheck(){
                 spacer2.style.cssText = "width: 10px; display: inline-block;";
                 var searchSubmitBtn = document.createElement('button');
                 searchSubmitBtn.style.cssText = "background-color: #005689; border: none;color: white;padding: 6px 10px;text-align: center;text-decoration: none;display: inline-block;font-size: 14px; border-radius: 5px;";
+                searchSubmitBtn.addEventListener("click", onSearch);
                 searchSubmitBtn.innerHTML = "Search";
 
                 searchContainer.appendChild(spacer1);
@@ -177,20 +178,25 @@ function createSearchUrl(words){
     return url;
 }
 
-/*fetchRequest = function(url, index){
-    fetch(url).then(res=>{
-        if(res.status !== 200){
-            console.log('Looks like there was a problem. Status Code: '
-            + response.status);
-            return;
+var onSearch = function(){
+    var input = this.parentNode.childNodes[1].value;
+    //console.log(input);
+    var listContainer = this.parentNode.parentNode.childNodes[1];
+    var client = new HttpClient();
+    let url = createSearchUrl(input.split(' '));
+    var http = new Http();
+    http.makeRequest('GET', url).then(
+        function (response){
+            var responseJSON = JSON.parse(response[1]);
+            var results = responseJSON.response.results;
+            for(var i = 0; i < listContainer.childNodes.length; i++){
+                listContainer.childNodes[i].childNodes[0].href = results[i].webUrl;
+                listContainer.childNodes[i].childNodes[0].innerHTML = results[i].webTitle;
+            }
+            //console.log(results);
         }
-        res.json().then(function(data){
-            console.log(index, data);
-            return [index, data];
-        });
-    });
-}*/
-
+    );
+}
 
 
 
