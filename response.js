@@ -88,9 +88,30 @@ function injectFactCheck(){
 
                 var listContainer = document.createElement('div');
                 listContainer.style.cssText = "position: inherit; background-color: #f9f9f9; min-width: 10px; z-index: 1; padding-top: 5px"
-                    listContainer.style.height = '0';
+                listContainer.style.height = '0';
                 listContainer.style.width = '0';
                 listContainer.style.visibility = 'hidden';
+
+                var searchContainer = document.createElement('div');
+                var searchPrompt = document.createElement('p');
+                searchPrompt.innerHTML = "Search the Guardian: "
+                searchPrompt.style.cssText = "display: inline-block; padding-right: 10px;";
+                var searchInput = document.createElement('input');
+                searchInput.addEventListener("click", function( e ){
+                    e = window.event || e; 
+                    if(this === e.target) {
+                        e.stopPropagation();
+                        // put your code here
+                    }
+                });
+                var searchSubmitBtn = document.createElement('button');
+                searchSubmitBtn.style.cssText = "border: 1px red solid";
+
+                searchContainer.appendChild(searchPrompt);
+                searchContainer.appendChild(searchInput);
+                searchContainer.appendChild(searchSubmitBtn);
+
+                listContainer.appendChild(searchContainer);
 
                 var unorderedList = document.createElement('ul');
                 actionContainer.appendChild(button);
@@ -128,27 +149,9 @@ function injectFactCheck(){
         );
     }
 }
-//https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad
-/*createGuardianUrl = function(splitTweet){
-    //console.log("thetweet", splitTweet);
-    var url = "https://content.guardianapis.com/search?q=";
-    console.log(splitTweet);
-    for(var i = 0; i < splitTweet.length; i++){
-        word = splitTweet[i];
-        console.log(word);
-        if(word[0] === '@'){
-        } else if(word[0] === '#' | word[0] === 'N'){
-            console.log("before",word);
-            word = word.slice(1);
-            console.log("after",word);
-        }
-    }
-    url += "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
-    console.log("url", url);
-    return url;
-}*/
+//sections: world us-news
 function createSearchUrl(words){
-    var url = "https://content.guardianapis.com/search?q=";
+    var url = "https://content.guardianapis.com/search?section=world%7COR%7Cus-news&q=";
     for(var i = 0; i < words.length; i++){
         word = words[i];
         var lC = word.length - 1;
@@ -204,6 +207,10 @@ var hideShowList = function(){
         listContainer.style.height = '0';
         listContainer.style.width = '0';
     }
+}
+
+var stopBubbling = function(){
+    return false;    
 }
 
 
