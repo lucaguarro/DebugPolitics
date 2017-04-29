@@ -104,7 +104,7 @@ function injectFactCheck(){
             console.log("web title", responseJSON.response.results[0].webTitle);
             //console.log("url", responseJSON.response.results[0].webUrl);
         });
-        var numItems;
+        var numItems; //How many links to put in the dropdown
         if(results.length < 3){
             numItems = results.length;
         } else{
@@ -171,28 +171,6 @@ function createSearchUrl(words){
     }
     url = url + "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
     return url;
-}
-
-function checkStatus(response){
-    if(response.status === 200){
-        return Promise.resolve(response);
-    } else{
-        return Promise.reject(
-            new Error(response.statusText)
-        );
-    }
-}
-
-function getJSON(response){
-    return response.json();
-}
-
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
 }
 
 function findClass(element, className) {
