@@ -97,6 +97,7 @@ function injectFactCheck(){
                 searchPrompt.innerHTML = "Search the Guardian: "
                 searchPrompt.style.cssText = "display: inline-block; padding-right: 10px;";
                 var searchInput = document.createElement('input');
+                searchInput.style.cssText = "padding-right: 10px;";
                 searchInput.addEventListener("click", function( e ){
                     e = window.event || e; 
                     if(this === e.target) {
@@ -105,7 +106,8 @@ function injectFactCheck(){
                     }
                 });
                 var searchSubmitBtn = document.createElement('button');
-                searchSubmitBtn.style.cssText = "border: 1px red solid";
+                searchSubmitBtn.style.cssText = "background-color: #4CAF50; border: none;color: white;padding: 6px 10px;text-align: center;text-decoration: none;display: inline-block;font-size: 14px; border-radius: 5px;";
+                searchSubmitBtn.innerHTML = "Search";
 
                 searchContainer.appendChild(searchPrompt);
                 searchContainer.appendChild(searchInput);
