@@ -93,24 +93,26 @@ function injectFactCheck(){
                 listContainer.style.visibility = 'hidden';
 
                 var searchContainer = document.createElement('div');
-                var searchPrompt = document.createElement('p');
-                searchPrompt.innerHTML = "Search the Guardian: "
-                searchPrompt.style.cssText = "display: inline-block; padding-right: 10px;";
                 var searchInput = document.createElement('input');
-                searchInput.style.cssText = "padding-right: 10px;";
+                searchInput.value = "Search the Guardian";
                 searchInput.addEventListener("click", function( e ){
                     e = window.event || e; 
                     if(this === e.target) {
                         e.stopPropagation();
-                        // put your code here
+                        this.value = '';
                     }
                 });
+                var spacer1 = document.createElement('span');
+                var spacer2 = document.createElement('span');
+                spacer1.style.cssText = "width: 10px; display: inline-block;";
+                spacer2.style.cssText = "width: 10px; display: inline-block;";
                 var searchSubmitBtn = document.createElement('button');
-                searchSubmitBtn.style.cssText = "background-color: #4CAF50; border: none;color: white;padding: 6px 10px;text-align: center;text-decoration: none;display: inline-block;font-size: 14px; border-radius: 5px;";
+                searchSubmitBtn.style.cssText = "background-color: #005689; border: none;color: white;padding: 6px 10px;text-align: center;text-decoration: none;display: inline-block;font-size: 14px; border-radius: 5px;";
                 searchSubmitBtn.innerHTML = "Search";
 
-                searchContainer.appendChild(searchPrompt);
+                searchContainer.appendChild(spacer1);
                 searchContainer.appendChild(searchInput);
+                searchContainer.appendChild(spacer2);
                 searchContainer.appendChild(searchSubmitBtn);
 
                 listContainer.appendChild(searchContainer);
@@ -134,7 +136,7 @@ function injectFactCheck(){
                     link.href = results[j].webUrl;
                     link.innerHTML = results[j].webTitle;
                     link.target = "_blank";
-                    link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block; border: 1px solid blue"
+                    link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block;"
                     listItem.appendChild(link);
                     unorderedList.appendChild(listItem);
                 }
