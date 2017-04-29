@@ -43,7 +43,7 @@ function findPoliticalTweets(tweets){
 
                 if(words[j].toLowerCase()===buzzWords[k]){
 
-                    politicalTweets.push([tweets[i],i]);
+                    politicalTweets.push([words,i]);
                     break loop2;
                 }
             }
@@ -128,48 +128,27 @@ function injectFactCheck(){
     }
 }
 //https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad
-createGuardianUrl = function(tweet){
+createGuardianUrl = function(splitTweet){
+    console.log("thetweet", splitTweet);
     var url = "https://content.guardianapis.com/search?q=";
+    for(var i = 0; i < splitTweet.length; i++){
+        url.push
+    }
     url += tweet;
     url += "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
     console.log("url", url);
     return url;
 }
-    // do something with response
-    /*for(var i = 0; i < tweetParentsArray.length; i++){
-        var actionContainer = document.createElement('div');
-        actionContainer.style.cssText = "display: inline-block; min-width: 80px; border: 2px solid red"
-        var insertionpoint = findClass(tweetParentsArray[i], "ProfileTweet-actionList").parentNode; //insertionarea[i].parentNode
-        insertionpoint.appendChild(actionContainer);
-    }*/
-    //var url = createSearchUrl(words);
-    //var url = "https://eventregistry.org/json/article?ignoreKeywords=&keywords=Donald%20Trump&action=getArticles&resultType=articles&callback=JSON_CALLBACK&apiKey=6f51b1a6-3665-4487-97d2-1c72a2d6b617";
-    //guardian-key: a1928b80-4fac-4c41-82fe-4950f60933ad
-    //console.log(httpGet(url));
-
-    /*fetch(url)
-        .then(checkStatus)
-        .then(getJSON)
-        .then(function(data){
-            console.log('DATA', data);
-        })
-        .catch(function(err){
-            console.log('ERROR', err);
-        });*/
 
 
 var hideShowList = function(){
     var targetElement = event.target || event.srcElement;
-    console.log(targetElement.nodeName);
     if(targetElement.nodeName == "I"){
         targetElement = targetElement.parentNode;
     }
-    console.log(targetElement);
     parentElement = targetElement.parentNode.parentNode.parentNode;
-    console.log('what is parent', parentElement);
     //listContainer = parentElement .getElementsByTagName('div');
     listContainer = (parentElement.childNodes)[5];
-    console.log('llisthopefullly',listContainer);
     if (listContainer.style.visibility === 'hidden'){
         listContainer.style.visibility = 'visible';
         listContainer.style.height = 'auto';
@@ -241,7 +220,6 @@ function findClass(element, className) {
 var prevUrl;
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-        console.log('the previous', prevUrl);
         var boiiii = checkPrevTab(window.location.href);
 		if (request.greeting == "fire" && boiiii) {
             prevUrl = window.location.href;
@@ -254,11 +232,9 @@ chrome.runtime.onMessage.addListener(
 function checkPrevTab(theurl){
     var splitPrevUrl;
     var splitCurrUrl = theurl.split('/');
-    console.log('Current', splitCurrUrl);
     if(prevUrl){
         splitPrevUrl = prevUrl.split('/');
     }else{return true;}
-    console.log('Prev', splitPrevUrl);
     if((splitPrevUrl.length == 4 && splitCurrUrl.length == 6) ||
         (splitPrevUrl.length == 6 && splitCurrUrl.length == 4)){
         prevUrl = theurl;
