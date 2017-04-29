@@ -95,8 +95,23 @@ function injectFactCheck(){
         var unorderedList = document.createElement('ul');
         actionContainer.appendChild(button);
         
+        var client = new HttpClient();
+        var results;
+        var theUrl = createGuardianUrl(politicalTweets[i][0]);
+        client.get(theUrl, function(response) {
+            var responseJSON = JSON.parse(response);
+            results = responseJSON.response.results;
+            console.log("web title", responseJSON.response.results[0].webTitle);
+            //console.log("url", responseJSON.response.results[0].webUrl);
+        });
+        var numItems;
+        if(results.length < 3){
+            numItems = results.length;
+        } else{
+            numItems = 3;
+        }
 
-        for(var j = 0; j < 3; j++){
+        for(var j = 0; j < numItems; j++){
             var listItem = document.createElement('li');
             var link = document.createElement('a');
             link.style.cssText = "position: inherit; padding: 10px 10px; text-decoration: none; display: inline-block; border: 1px solid blue"
@@ -109,15 +124,16 @@ function injectFactCheck(){
         insertionPointList.appendChild(listContainer);
         insertionpoint.appendChild(actionContainer);
 
-        var client = new HttpClient();
-        client.get('https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad', function(response) {
-            var responseJSON = JSON.parse(response);
-            console.log("responseJSON", responseJSON);
-            console.log("web title", responseJSON.response.results[0].webTitle);
-            console.log("url", responseJSON.response.results[0].webUrl);
-            //console.log("url", response.results[0].webUrl)
-        });
+
     }
+}
+//https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad
+createGuardianUrl = function(tweet){
+    var url = "https://content.guardianapis.com/search?q=";
+    url += tweet;
+    url += "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
+    console.log("url", url);
+    return url;
 }
     // do something with response
     /*for(var i = 0; i < tweetParentsArray.length; i++){
