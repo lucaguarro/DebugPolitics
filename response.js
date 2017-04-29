@@ -19,7 +19,7 @@ style.href = chrome.extension.getURL('font-awesome-4.7.0/css/font-awesome.min.cs
 
 
 
-var buzzWords = ["a","and", "the", "obama", "trump", "obamacare", "north korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
+var buzzWords = ["a","and", "russia", "the", "obama", "trump", "obamacare", "korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
 
 function getCNNlink(queryParams){
     theUrl = 'https://services.cnn.com/newsgraph/search/'
@@ -68,8 +68,8 @@ function injectFactCheck(){
     var politicalTweets = findPoliticalTweets(tweets);
     for(var i = 0; i < politicalTweets.length; i++){       
         var client = new HttpClient();
-    
-        let url = 'https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad'
+        let url = createSearchUrl(politicalTweets[i][0]);
+        //let url = 'https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad'
         var http = new Http();
         http.makeRequest('GET', url, i).then(
             function (response){
@@ -129,14 +129,44 @@ function injectFactCheck(){
     }
 }
 //https://content.guardianapis.com/search?q=Donald%20Trump&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad
-createGuardianUrl = function(splitTweet){
-    console.log("thetweet", splitTweet);
+/*createGuardianUrl = function(splitTweet){
+    //console.log("thetweet", splitTweet);
     var url = "https://content.guardianapis.com/search?q=";
+    console.log(splitTweet);
     for(var i = 0; i < splitTweet.length; i++){
-        url += splitTweet[i];
+        word = splitTweet[i];
+        console.log(word);
+        if(word[0] === '@'){
+        } else if(word[0] === '#' | word[0] === 'N'){
+            console.log("before",word);
+            word = word.slice(1);
+            console.log("after",word);
+        }
     }
     url += "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
     console.log("url", url);
+    return url;
+}*/
+function createSearchUrl(words){
+    var url = "https://content.guardianapis.com/search?q=";
+    for(var i = 0; i < words.length; i++){
+        word = words[i];
+        var lC = word.length - 1;
+        if(word[0] == '@'){
+            continue;
+        } else if(word[0] === '#'){         
+            word = word.slice(1);        
+        } else if(word[lC] === '.' | word[lC] === ',' | word[lC] === '!'){
+            word = word.slice(0, -1);
+        }
+        if(i != words.length - 1){
+            url = url + words[i] + "%20";
+        } else{
+            url = url + words[i]
+        }
+    }
+    url = url + "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
+    console.log("our URL", url);
     return url;
 }
 
@@ -176,18 +206,7 @@ var hideShowList = function(){
     }
 }
 
-function createSearchUrl(words){
-    var url = "http://content.guardianapis.com/search?q=";
-    for(var i = 0; i < words.length; i++){
-        if(i != words.length - 1){
-            url = url + words[i] + "%20";
-        } else{
-            url = url + words[i]
-        }
-    }
-    url = url + "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
-    return url;
-}
+
 
 function findClass(element, className) {
     var foundElement = null, found;
