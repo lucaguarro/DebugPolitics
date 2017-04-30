@@ -19,7 +19,7 @@ style.href = chrome.extension.getURL('font-awesome-4.7.0/css/font-awesome.min.cs
 
 
 
-var buzzWords = ["a","and", "russia", "the", "obama", "trump", "obamacare", "korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
+var buzzWords = ["russia", "obama", "trump", "obamacare", "korea", "politics", "china", "terrorism", "dems", "democrats", "healthcare", "president"];
 
 function getCNNlink(queryParams){
     theUrl = 'https://services.cnn.com/newsgraph/search/'
@@ -35,7 +35,10 @@ function findPoliticalTweets(tweets){
     var politicalTweets = [];
     loop1:
     for(var i = 0; i < tweets.length; i++){
-        var words = tweets[i].split(" ");
+        var tweet = tweets[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()—"]/g,"")
+        var words = tweet.split(" ");
+        words.pop(); //Should probably change this later
+        console.log("words", words);
     loop2:
         for(var j = 0; j < words.length; j++){
     loop3:
@@ -49,6 +52,7 @@ function findPoliticalTweets(tweets){
             }
         }
     }
+    console.log("Political", politicalTweets);
     return politicalTweets
 }
 
@@ -67,7 +71,6 @@ function injectFactCheck(){
     var tweets = readTweets(tweetParentsArray);
     var politicalTweets = findPoliticalTweets(tweets);
     for(var i = 0; i < politicalTweets.length; i++){       
-        var client = new HttpClient();
         let url = createSearchUrl(politicalTweets[i][0]);
         var http = new Http();
         http.makeRequest('GET', url, i).then(
@@ -157,7 +160,14 @@ function injectFactCheck(){
 //sections: world us-news
 function createSearchUrl(words){
     var url = "https://content.guardianapis.com/search?section=world%7COR%7Cus-news&q=";
-    for(var i = 0; i < words.length; i++){
+    var numWords = words.length;
+
+    if(words[numWords-1].substring(0,4) === "pic."){
+        console.log("anything??");
+        numWords = numWords - 1;
+    }
+
+    for(var i = 0; i < numWords; i++){
         word = words[i];
         var lC = word.length - 1;
         if(word[0] == '@'){
@@ -174,7 +184,6 @@ function createSearchUrl(words){
         }
     }
     url = url + "&api-key=a1928b80-4fac-4c41-82fe-4950f60933ad";
-    console.log("our URL", url);
     return url;
 }
 
@@ -193,7 +202,6 @@ var onSearch = function(){
                 listContainer.childNodes[i].childNodes[0].href = results[i].webUrl;
                 listContainer.childNodes[i].childNodes[0].innerHTML = results[i].webTitle;
             }
-            //console.log(results);
         }
     );
 }
@@ -218,11 +226,6 @@ var hideShowList = function(){
         listContainer.style.width = '0';
     }
 }
-
-var stopBubbling = function(){
-    return false;    
-}
-
 
 
 function findClass(element, className) {
@@ -274,7 +277,7 @@ function checkPrevTab(theurl){
     }
 }
 
-var HttpClient = function() {
+/*var HttpClient = function() {
     this.get = function(aUrl, aCallback) {
         var anHttpRequest = new XMLHttpRequest();
         anHttpRequest.onreadystatechange = function() { 
@@ -285,7 +288,7 @@ var HttpClient = function() {
         anHttpRequest.open( "GET", aUrl, true );            
         anHttpRequest.send( null );
     }
-}
+}*/
 
 function Http () {
     /**
@@ -297,6 +300,7 @@ function Http () {
      */
     function makeRequest(method,url,data) {
         // Return a new promise.
+        console.log("kobe",url);
         return new Promise(function(resolve, reject) {
             var req = new XMLHttpRequest();
             req.open(method, url);
