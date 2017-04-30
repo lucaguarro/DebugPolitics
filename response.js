@@ -35,7 +35,7 @@ function getCNNlink(queryParams){
 function findPoliticalTweets(tweets){
     var politicalTweets = [];
     loop1:
-    for(var i = 0; i < tweets.length; i++){
+    for(var i = startTweetIndex; i < tweets.length; i++){
         var tweet = tweets[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()—"]/g,"")
         var words = tweet.split(" ");
         words.pop(); //Should probably change this later
@@ -53,6 +53,8 @@ function findPoliticalTweets(tweets){
         }
     }
     console.log("Political", politicalTweets);
+    startTweetIndex = tweets.length;
+    
     return politicalTweets
 }
 
@@ -261,7 +263,9 @@ chrome.runtime.onMessage.addListener(
 			injectFactCheck();		
 			sendResponse({farewell: "fired"});
 		} else if (request.greeting == "kobe"){
-            //console.log("ayyyyy kobe");
+            console.log("Start", startTweetIndex);
+            injectFactCheck();
+            sendResponse({farewell: "fired2"});
         }
 	}
 );
