@@ -10,6 +10,7 @@ if (!document.getElementById(cssId))
     link.media = 'all';
     head.appendChild(link);
 }*/
+var startTweetIndex = 0;
 
 var style = document.createElement('link');
 style.rel = 'stylesheet';
@@ -67,6 +68,8 @@ function readTweets(parentElements){
 
 function injectFactCheck(){
     var tweetParentsArray = document.getElementsByClassName("js-stream-tweet");
+    if(tweetParentsArray.length == 0){return;}
+
     var tweets = readTweets(tweetParentsArray);
     var politicalTweets = findPoliticalTweets(tweets);
     for(var i = 0; i < politicalTweets.length; i++){       
@@ -258,7 +261,7 @@ chrome.runtime.onMessage.addListener(
 			injectFactCheck();		
 			sendResponse({farewell: "fired"});
 		} else if (request.greeting == "kobe"){
-            console.log("ayyyyy kobe");
+            //console.log("ayyyyy kobe");
         }
 	}
 );
