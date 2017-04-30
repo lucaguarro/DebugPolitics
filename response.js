@@ -86,7 +86,7 @@ function injectFactCheck(){
                 button.style.cssText = "cursor: pointer;"
 
                 var icon = document.createElement('i');
-                icon.style.cssText = "font-size: 20px; color: red;"
+                icon.style.cssText = "font-size: 20px; color: #005689;"
                 icon.className += "fa fa-check-circle-o";
                 icon.setAttribute("aria-hidden", "true");
 
