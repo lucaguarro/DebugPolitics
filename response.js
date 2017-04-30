@@ -122,6 +122,9 @@ function injectFactCheck(){
                 listContainer.appendChild(searchContainer);
 
                 var unorderedList = document.createElement('ul');
+//                var guardianUrl = chrome.extension.getUrl(./theguardian1.jpg)
+//                console.log(guardianUrl);
+//                unorderedList.style.listStyleImage = "url(" + guardianUrl + ")";
                 actionContainer.appendChild(button);
 
                 var responseJSON = JSON.parse(response[1]);
@@ -136,6 +139,7 @@ function injectFactCheck(){
                 }
                 for(var j = 0; j < numItems; j++){
                     var listItem = document.createElement('li');
+                    //listItem.style.listStyleImage = 'url('./theguardian1.jpg')';
                     var link = document.createElement('a');
                     link.href = results[j].webUrl;
                     link.innerHTML = results[j].webTitle;
