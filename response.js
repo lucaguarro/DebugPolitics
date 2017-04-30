@@ -257,7 +257,7 @@ chrome.runtime.onMessage.addListener(
             prevUrl = window.location.href;
 			injectFactCheck();		
 			sendResponse({farewell: "fired"});
-		} else if (request.greeting == "haha"){
+		} else if (request.greeting == "kobe"){
             console.log("ayyyyy kobe");
         }
 	}
