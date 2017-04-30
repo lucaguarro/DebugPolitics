@@ -38,7 +38,6 @@ function findPoliticalTweets(tweets){
         var tweet = tweets[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()—"]/g,"")
         var words = tweet.split(" ");
         words.pop(); //Should probably change this later
-        console.log("words", words);
     loop2:
         for(var j = 0; j < words.length; j++){
     loop3:
@@ -123,14 +122,12 @@ function injectFactCheck(){
 
                 var unorderedList = document.createElement('ul');
                 var guardianUrl = chrome.extension.getURL("./theguardian.png");
-                console.log(guardianUrl);
                 unorderedList.style.listStyleImage = "url(" + guardianUrl + ")";
                 actionContainer.appendChild(button);
                 actionContainer.appendChild(button);
 
                 var responseJSON = JSON.parse(response[1]);
                 var results = responseJSON.response.results;
-                console.log(results);
 
                 var numItems; //How many links to put in the dropdown
                 if(results.length < 3){
@@ -150,7 +147,6 @@ function injectFactCheck(){
                     unorderedList.appendChild(listItem);
                 }
                 listContainer.appendChild(unorderedList);
-                console.log("response 0", response[0]);
                 index = politicalTweets[response[0]][1];
                 var insertionpoint = findClass(tweetParentsArray[index], "ProfileTweet-actionList");
                 var insertionPointList = insertionpoint.parentNode; //insertionarea[response[0]].parentNode
@@ -168,7 +164,6 @@ function createSearchUrl(words){
     var numWords = words.length;
 
     if(words[numWords-1].substring(0,4) === "pic."){
-        console.log("anything??");
         numWords = numWords - 1;
     }
 
@@ -262,7 +257,9 @@ chrome.runtime.onMessage.addListener(
             prevUrl = window.location.href;
 			injectFactCheck();		
 			sendResponse({farewell: "fired"});
-		}
+		} else if (request.greeting == "haha"){
+            console.log("ayyyyy kobe");
+        }
 	}
 );
 
@@ -281,18 +278,6 @@ function checkPrevTab(theurl){
     }
 }
 
-/*var HttpClient = function() {
-    this.get = function(aUrl, aCallback) {
-        var anHttpRequest = new XMLHttpRequest();
-        anHttpRequest.onreadystatechange = function() { 
-            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-                aCallback(anHttpRequest.responseText);
-        }
-
-        anHttpRequest.open( "GET", aUrl, true );            
-        anHttpRequest.send( null );
-    }
-}*/
 
 function Http () {
     /**
@@ -304,7 +289,6 @@ function Http () {
      */
     function makeRequest(method,url,data) {
         // Return a new promise.
-        console.log("kobe",url);
         return new Promise(function(resolve, reject) {
             var req = new XMLHttpRequest();
             req.open(method, url);
