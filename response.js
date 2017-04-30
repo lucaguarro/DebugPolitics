@@ -122,9 +122,10 @@ function injectFactCheck(){
                 listContainer.appendChild(searchContainer);
 
                 var unorderedList = document.createElement('ul');
-//                var guardianUrl = chrome.extension.getUrl(./theguardian1.jpg)
-//                console.log(guardianUrl);
-//                unorderedList.style.listStyleImage = "url(" + guardianUrl + ")";
+                var guardianUrl = chrome.extension.getURL("./theguardian.png");
+                console.log(guardianUrl);
+                unorderedList.style.listStyleImage = "url(" + guardianUrl + ")";
+                actionContainer.appendChild(button);
                 actionContainer.appendChild(button);
 
                 var responseJSON = JSON.parse(response[1]);

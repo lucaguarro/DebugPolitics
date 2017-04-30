@@ -15,5 +15,5 @@
       "all_frames": true
     }
   ],
-  "web_accessible_resources": ["font-awesome-4.7.0/css/font-awesome.min.css","*.ttf","*.woff","*.woff2","*.jpg"]
+  "web_accessible_resources": ["font-awesome-4.7.0/css/font-awesome.min.css","*.ttf","*.woff","*.woff2","*.png"]
 }
