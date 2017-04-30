@@ -191,7 +191,6 @@ var onSearch = function(){
     var input = this.parentNode.childNodes[1].value;
     //console.log(input);
     var listContainer = this.parentNode.parentNode.childNodes[1];
-    var client = new HttpClient();
     let url = createSearchUrl(input.split(' '));
     var http = new Http();
     http.makeRequest('GET', url).then(
