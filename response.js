@@ -126,7 +126,8 @@ function injectFactCheck(){
                 listContainer.appendChild(searchContainer);
 
                 var unorderedList = document.createElement('ul');
-                var guardianUrl = chrome.extension.getURL("./theguardian.png");
+                var guardianUrl = chrome.extension.getURL("./guardian2.png");
+                console.log(guardianUrl);
                 unorderedList.style.listStyleImage = "url(" + guardianUrl + ")";
                 actionContainer.appendChild(button);
                 actionContainer.appendChild(button);
@@ -142,7 +143,8 @@ function injectFactCheck(){
                 }
                 for(var j = 0; j < numItems; j++){
                     var listItem = document.createElement('li');
-                    //listItem.style.listStyleImage = 'url('./theguardian1.jpg')';
+                    //listItem.style.cssText = 'url('./theguardian1.jpg')';
+                    listItem.style.cssText = 'background-image: ' + guardianUrl + ';';
                     var link = document.createElement('a');
                     link.href = results[j].webUrl;
                     link.innerHTML = results[j].webTitle;
